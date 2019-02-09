@@ -24,6 +24,11 @@ public class MapGenerator : MonoBehaviour
 	public int randomFillPercent;
 	
 	private int[,] map;
+	
+	[Range(0, 200)]
+	public int wallThresholdSize = 50;
+	[Range(0, 200)]
+	public int roomThresholdSize = 50;
 
 	void Start() {
 		GenerateMap();
@@ -78,11 +83,22 @@ public class MapGenerator : MonoBehaviour
 	void ProcessMap() {
 		List<List<Coord>> wallRegions = GetRegions(1);
 
-		int wallThresholdSize = 50;
+		//int wallThresholdSize = 50;
 		foreach (List<Coord> wallRegion in wallRegions) {
 			if (wallRegion.Count < wallThresholdSize) {
 				foreach (Coord tile in wallRegion) {
 					map[tile.tileX, tile.tileY] = 0;
+				}
+			}
+		}
+		
+		List<List<Coord>> roomRegions = GetRegions(0);
+
+		//int wallThresholdSize = 50;
+		foreach (List<Coord> roomRegion in roomRegions) {
+			if (roomRegion.Count < roomThresholdSize) {
+				foreach (Coord tile in roomRegion) {
+					map[tile.tileX, tile.tileY] = 1;
 				}
 			}
 		}
